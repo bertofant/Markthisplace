@@ -1,0 +1,24 @@
+cookie:
+  expiry_days: 30
+  key: markthisplace_key
+  name: markthisplace_name
+credentials:
+  usernames:
+    pippo@gmail.com:
+      email: pippo@gmail.com
+      name: pippo
+      password: $2b$12$2SHPqB99mz8bg2g9tdRCguTUlkZXzsma.rWMng0aptMf01UMbxAVW
+    prova@gmail.com:
+      email: prova@gmail.com
+      name: Prova
+      password: $2b$12$EQB8ST1fZLY7aUzlGkSBSOBBQFodQSp8dmyjhnNWtzgC6dlHHPluS
+    roberto.fantini@gmail.com:
+      email: roberto.fantini@gmail.com
+      name: Roberto Fantini
+      password: $2b$12$8dvSHvVgq0fQ9aumEDgKX.BatFTVOYKQlg8yAy6PRO39YHNeC0hFe
+    robi@gmail.com:
+      email: robi@gmail.com
+      name: Robi
+      password: $2b$12$btPCJUCMJ9pF0XpIJ9TUp.T2zkrm0Q5nhDu7Laixh6v/7wpA9Pwda
+preauthorized:
+  emails: null
