@@ -1,25 +1,7 @@
 import streamlit as st
 import myauthenticator as stauth
 import sqlfunctions
-
-#import yaml
-#from yaml import SafeLoader
-
-
-def formRegistrazione():
-    with st.expander('Nuovo utente? Registrati qui', expanded=st.session_state['register_expanded']):
-        try:
-            if authenticator.register_user('Registrazione Nuovo Utente', location= 'main', preauthorization=False):
-                st.session_state['show_register_success'] = True
-                st.session_state['register_expanded'] = False
-                # with open('./users.yaml','w') as file:
-                #     yaml.dump(config, file, default_flow_style=False)
-                sqlfunctions.writeconfigtosql(config)
-                st.session_state['config'] = config
-                st.experimental_rerun()
-        except Exception as e:
-            st.error(e)
-
+from Home import formRegistrazione, authenticator
 
 # initialize session state
 if 'config' not in st.session_state:
@@ -38,17 +20,9 @@ if 'show_register_success' not in st.session_state:
 # with open('./users.yaml') as file:
 #     config = yaml.load(file, Loader=SafeLoader)
 
-authenticator = stauth.MyAuthenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
-
 
 if st.session_state['authentication_status']:
-    st.header('User Registered')
+    st.header('This is the map page for a registered user')
     authenticator.logout('Logout','sidebar')
 else:
     if st.session_state['show_register_success']:
