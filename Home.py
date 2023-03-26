@@ -4,9 +4,6 @@ import sqlfunctions
 
 #import yaml
 #from yaml import SafeLoader
-from bokeh.models.widgets import Button
-from bokeh.models import CustomJS
-from streamlit_bokeh_events import streamlit_bokeh_events
 from streamlit_js_eval import get_geolocation
 
 
@@ -59,7 +56,7 @@ if st.session_state['authentication_status']:
 
     if picture:
         st.image(picture)
-        
+
     location = get_geolocation()
     st.write(f'Current coordinates are {location}')
     authenticator.logout('Logout','sidebar')
