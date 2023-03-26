@@ -1,8 +1,9 @@
 import streamlit as st
 import myauthenticator as stauth
-import sqlalchemy
-import yaml
-from yaml import SafeLoader
+import sqlfunctions
+
+#import yaml
+#from yaml import SafeLoader
 
 
 def formRegistrazione():
@@ -11,14 +12,31 @@ def formRegistrazione():
             if authenticator.register_user('Registrazione Nuovo Utente', location= 'main', preauthorization=False):
                 st.session_state['show_register_success'] = True
                 st.session_state['register_expanded'] = False
-                with open('./users.yaml','w') as file:
-                    yaml.dump(config, file, default_flow_style=False)
+                # with open('./users.yaml','w') as file:
+                #     yaml.dump(config, file, default_flow_style=False)
+                sqlfunctions.writeconfigtosql(config)
+                st.session_state['config'] = config
                 st.experimental_rerun()
         except Exception as e:
             st.error(e)
 
-with open('./users.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+
+# initialize session state
+if 'config' not in st.session_state:
+    config = sqlfunctions.getconfigfromsql()
+    st.session_state['config'] = config
+else:
+    config = st.session_state['config']
+
+if 'register_expanded' not in st.session_state:
+    st.session_state['register_expanded'] = False
+
+if 'show_register_success' not in st.session_state:
+    st.session_state['show_register_success'] = False
+
+
+# with open('./users.yaml') as file:
+#     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.MyAuthenticate(
     config['credentials'],
@@ -28,10 +46,6 @@ authenticator = stauth.MyAuthenticate(
     config['preauthorized']
 )
 
-if 'register_expanded' not in st.session_state:
-    st.session_state['register_expanded'] = False
-if 'show_register_success' not in st.session_state:
-    st.session_state['show_register_success'] = False
 
 if st.session_state['authentication_status']:
     st.header('User Registered')

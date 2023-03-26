@@ -1,12 +1,12 @@
 import psycopg2
 
-CONFIGDBSTRING = "dbname='kclxalbu' user='kclxalbu' password='VKrYKg1EJfFTF4ydqWV5TBhBsBLWun6u' host='kandula.db.elephantsql.com'  "
+CONFIGDBSTRING = "dbname='cpxuoova' user='cpxuoova' password='zNVH65oF1DA_8vWH683CzLK-lpvQ7vlH' host='mel.db.elephantsql.com'  "
 
 
 def create_config_table():
     conn = psycopg2.connect(CONFIGDBSTRING)
     cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS config (username TEXT, name TEXT, password TEXT)")
+    cur.execute("CREATE TABLE IF NOT EXISTS config (username TEXT, name TEXT, password TEXT, PRIMARY KEY (username))")
     conn.commit()
     conn.close()
 
@@ -43,7 +43,7 @@ def update_in_config_table(usernmane,name,password):
 
 def getconfigfromsql():
     config = {}
-    config['cookie'] = {'expiry_days': 30, 'key': 'webapp_presenze_key', 'name':'webapp_presenze_name' }
+    config['cookie'] = {'expiry_days': 30, 'key': 'markthisplace_key', 'name':'markthisplace_name' }
     credentials_dict={}
     usernames_dict={}
     accounts = view_config_table()
@@ -56,4 +56,19 @@ def getconfigfromsql():
     preauth_dict['emails'] = None
     config['preauthorized'] = preauth_dict
     return config
+
+def writeconfigtosql(config):
+    create_config_table()
+    # Load existing confi to avoid writing data that already exists
+    stored_config = getconfigfromsql()
+    stored_usernames = stored_config['credentials']['usernames'].keys()
+    for username, infos in config['credentials']['usernames'].items():
+        if username not in stored_usernames:
+            name = infos['name']
+            password = infos['password']
+            insert_in_config_table(username,name,password)
+        else:
+            print(f'skipping sql insert of {username}')
+
+
 
